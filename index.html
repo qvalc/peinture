@@ -36,15 +36,8 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <script>
-    /* =========================
-       1) DONNÉES "PEINTURE"
-       ========================= */
-
-    /** Images par catégorie
-     *  IMPORTANT : sur un site statique, on ne peut pas "lister un dossier".
-     *  Donc on garde une liste (ou on utilisera plus tard un manifest JSON).
-     */
     const IMAGES = {
+
       "levis": [
         "Amb.lak-sat.jpg",
         "Amb.lak.mat.jpg",
@@ -56,9 +49,7 @@
         "Easyclean-cuisine-sdb-sat.jpg",
         "Easyclean-satin.jpg",
         "Expert-mur.jpg",
-        "Facade-exp-levis-mix.png",
         "Ferro-decor.jpg",
-        "Lak-exp-high-gloss.png",
         "Lak-exp-sat.jpg",
         "Lak-rapide-exter.jpg",
         "Lak-reg-sat.jpg",
@@ -95,14 +86,19 @@
         "vitrificateur-parquet.png"
       ],
 
-      "basin": []
+      "basin": [
+        "aquadux.png",
+        "cire-siccative.png",
+        "huile-maintenance.png",
+        "huile-parquet-color.png",
+        "intensive-cleaner.png",
+        "nettoyant-wash-wax.png",
+        "no-visible-huile.png",
+        "vitrificateur-2-composants-acryl.png"
+      ]
+
     };
 
-
-    /** Libellés propres (optionnel)
-     *  Si tu veux afficher un nom plus “marketing” que le nom du fichier.
-     *  Sinon, le code enlève l’extension et remplace les "-" par des espaces.
-     */
     const DISPLAY_NAMES = {
       "levis/Amb.lak-sat.jpg": "Ambiance laque satin",
       "levis/Amb.lak.mat.jpg": "Ambiance laque mat",
@@ -142,8 +138,14 @@
       "v33/vernis-yacht.png": "Vernis yacht",
       "v33/vitrificateur-escaliers.png": "Vitrificateur escaliers",
       "v33/vitrificateur-parquet.png": "Vitrificateur parquet",
-
-
+      "basin/aquadux.png": "Aquadux",
+      "basin/cire-sicative.png": "Cire sicative",
+      "basin/huile-maintenance.png": "Huile maintenance",
+      "basin/huile-parquet-color.png": "Huile parquet color",
+      "basin/intensive-cleaner.png": "Intensive cleaner",
+      "basin/nettoyant-wash-wax.png": "Nettoyant wash wax",
+      "basin/no-visible-huile.png": "No visible huile",
+      "basin/vitrificateur-2-composants-acryl.png": "Vitrificateur 2 composants acryl",
     };
 
     const PRODUCT_PDFS = {
@@ -168,6 +170,32 @@
       "v33/vernis-yacht.png": "pdf/v33-vernis-yacht.pdf",
       "v33/vitrificateur-escaliers.png": "pdf/v33-vitrificateur-escaliers.pdf",
       "v33/vitrificateur-parquet.png": "pdf/v33-vitrificateur-parquet.pdf",
+      "basin/aquadux.png": "pdf/basin-aquadux.pdf",
+      "basin/cire-sicative.png": "pdf/basin-cire-sicative.pdf",
+      "basin/huile-maintenance.png": "pdf/basin-huile-maintenance.pdf",
+      "basin/huile-parquet-color.png": "pdf/basin-huile-parquet-color.pdf",
+      "basin/intensive-cleaner.png": "pdf/basin-intensive-cleaner.pdf",
+      "basin/nettoyant-wash-wax.png": "pdf/basin-nettoyant-wash-wax.pdf",
+      "basin/no-visible-huile.png": "pdf/basin-no-visible-huile.pdf",
+      "basin/vitrificateur-2-composants-acryl.png": "pdf/basin-vitrificateur-2-composants-acryl.pdf",
+      
+      "levis/Amb.lak-sat.jpg": "pdf/levis-amb-lak-sat.pdf",
+      "levis/Amb.lak.mat.jpg": "pdf/levis-amb-lak-mat.pdf",
+      "levis/Amb.mur-extra-mat.jpg": "pdf/levis-amb-mur-extra-mat.pdf",
+      "levis/Amb.mur-metallic.jpg": "pdf/levis-amb-mur-metallic.pdf",
+      "levis/Amb.mur-satin.jpg": "pdf/levis-amb-mur-satin.pdf",
+      "levis/Duo-sat-mix.jpg": "pdf/levis-duo-sat-mix.pdf",
+      "levis/Easyclean-cuisine-sdb-mat.jpg": "pdf/levis-easyclean-cuisine-sdb-mat.pdf",
+      "levis/Easyclean-cuisine-sdb-sat.jpg": "pdf/levis-easyclean-cuisine-sdb-sat.pdf",
+      "levis/Easyclean-satin.jpg": "pdf/levis-easyclean-satin.pdf",
+      "levis/Expert-mur.jpg": "pdf/levis-expert-mur.pdf",
+      "levis/Ferro-decor.jpg": "pdf/levis-ferro-decor.pdf",
+      "levis/Lak-exp-sat.jpg": "pdf/levis-lak-exp-sat.pdf",
+      "levis/Lak-rapide-exter.jpg": "pdf/levis-lak-rapide-exter.pdf",
+      "levis/Lak-reg-sat.jpg": "pdf/levis-lak-reg-sat.pdf",
+      "levis/Levis-floor-regul.jpg": "pdf/levis-floor-regul.pdf",
+
+
     };
 
     const CAT_SIZES = {
@@ -437,7 +465,11 @@
 
 
 
-            <a class="thumb" href="${src}" target="_blank" rel="noopener">
+            <a class="thumb"
+   href="${PRODUCT_PDFS[pathKey] ?? src}"
+   target="_blank"
+   rel="noopener">
+
               <img src="${src}" alt="${label}"
                 onerror="this.style.display='none'; this.closest('figure').insertAdjacentHTML('beforeend','<div class=\\'missing\\'>❌ Introuvable : ${src}</div>')">
             </a>
