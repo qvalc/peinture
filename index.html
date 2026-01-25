@@ -19,7 +19,7 @@
     <div class="nav-row">
       <div id="catButtons" class="catButtons"></div>
 
-      <div class="nuancier-mini">
+      <div class="nuancier-mini" id="nuancierBlock" style="display:none">
         <img src="nuancier.png" alt="Nuancier couleurs">
         <p>Toutes nos couleurs sont teintées en magasin</p>
       </div>
@@ -517,10 +517,21 @@
 
     function syncCategoryUI() {
       if (catSelect) catSelect.value = activeCat;
+
       document.querySelectorAll("#catButtons .catBtn").forEach(b => {
         b.classList.toggle("active", b.dataset.cat === activeCat);
       });
+
+      // ✅ gestion nuancier conditionnelle
+      const nuancier = document.getElementById("nuancierBlock");
+      if (nuancier) {
+        nuancier.style.display =
+          (activeCat === "levis" || activeCat === "diessner")
+            ? "flex"
+            : "none";
+      }
     }
+
 
     function render() {
       const cat = activeCat;
