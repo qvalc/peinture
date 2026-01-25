@@ -337,20 +337,6 @@ header.top {
   min-width: 0;
 }
 
-.nuancier-mini {
-  flex: 0 0 220px;
-  /* 👈 largeur fixe à droite */
-}
-
-
-
-.nuancier-mini {
-  margin-left: auto;
-  /* pousse à droite */
-  text-align: center;
-  max-width: 220px;
-}
-
 .nuancier-mini img {
   width: 100%;
   height: 80px;
@@ -380,13 +366,6 @@ header.top {
   /* prend la place */
   min-width: 0;
   /* autorise le scroll */
-}
-
-/* nuancier collé à droite */
-.nuancier-mini {
-  flex: 0 0 240px;
-  /* largeur du bloc à droite */
-  text-align: center;
 }
 
 .nuancier-mini img {
@@ -430,4 +409,119 @@ header.top {
   padding: 1px;
   background: #fff;
   border-radius: 50%;
+}
+
+/* ===== Groupes (titres au-dessus centrés) ===== */
+
+.catGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.catGroupTitle {
+  font-size: 13px;
+  font-weight: 800;
+  color: #9e7c32;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+
+.catGroupRow {
+  display: flex;
+  gap: var(--cat-gap);
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+/* séparation visuelle entre Peintures / Protections bois */
+.catGroup+.catGroup {
+  border-left: 1px solid rgba(158, 124, 50, 0.35);
+  padding-left: 18px;
+  margin-left: 18px;
+}
+
+/* ===== Nuancier : centré dans l'espace libre à droite ===== */
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+#catButtons {
+  flex: 0 1 auto;
+  /* le menu prend sa largeur */
+  min-width: 0;
+}
+
+/* le nuancier prend le reste et se centre dedans */
+.nuancier-mini {
+  flex: 1 1 auto;
+  /* prend toute la zone restante */
+  display: flex;
+  justify-content: center;
+  /* centre son contenu */
+  align-items: center;
+}
+
+.nuancier-mini>div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  /* largeur max du nuancier */
+}
+
+.nuancier-mini img {
+  width: 100%;
+  max-width: 360px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.nuancier-mini p {
+  font-size: 11px;
+  color: #666;
+  margin: 4px 0 0;
+  line-height: 1.2;
+}
+
+/* ===== Bandeau : boutons à gauche + nuancier centré dans l'espace restant ===== */
+.nav-row {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  /* gauche = largeur contenu, droite = reste */
+  align-items: center;
+  column-gap: 16px;
+  width: 100%;
+}
+
+#catButtons {
+  width: auto !important;
+  /* 👈 écrase le width:100% de .catButtons */
+  flex: none;
+  /* inutile en grid mais évite conflits */
+}
+
+.nuancier-mini {
+  display: flex;
+  justify-content: center;
+  /* 👈 centre dans la colonne droite */
+  align-items: center;
+}
+
+/* Hammerite : logo complet visible */
+.catBtn[data-cat="hammerite"] .catIcon img{
+  object-fit: contain;
+  padding: 1px;
+  background: #fff;
 }

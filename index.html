@@ -19,13 +19,15 @@
     <div class="nav-row">
       <div id="catButtons" class="catButtons"></div>
 
-      <div class="nuancier-mini" id="nuancierBlock" style="display:none">
-        <img src="nuancier.png" alt="Nuancier couleurs">
-        <p>Toutes nos couleurs sont teintées en magasin</p>
+      <div class="nuancier-mini" id="nuancierBlock">
+        <div>
+          <img src="nuancier.png" alt="Nuancier couleurs">
+          <p>Toutes nos couleurs sont teintées en magasin</p>
+        </div>
       </div>
-    </div>
 
-    <select id="catSelect" class="catSelect" aria-label="Choisir une catégorie"></select>
+
+      <select id="catSelect" class="catSelect" aria-label="Choisir une catégorie"></select>
 
 
   </header>
@@ -136,6 +138,12 @@
         "effect-tableau.png",
         "carat-embout.png"
       ],
+
+      "hammerite": [
+        "hammerite-1.png",
+        "hammerite-2.png"
+      ]
+
 
 
     };
@@ -297,7 +305,7 @@
       "basin": ["1L", "2.5L", "5L"],
       "cecil": ["1L", "5L", "25L"],
       "motip": ["400ml"],
-
+      "hammerite": [""],
     };
 
     const CATEGORY_UI = [
@@ -308,6 +316,7 @@
       { id: "basin", label: "Basin" },
       { id: "cecil", label: "Cecil" },
       { id: "motip", label: "Motip Spray" },
+      { id: "hammerite", label: "Hammerite" },
 
     ];
 
@@ -319,10 +328,14 @@
       "basin": "vignettes-boutons/basin.png",
       "cecil": "vignettes-boutons/cecil.png",
       "motip": "vignettes-boutons/motip.png",
-
+      "hammerite": "vignettes-boutons/hammerite.png",
 
     };
 
+    const CAT_GROUPS = [
+      { id: "paint", label: "Peintures", cats: ["levis", "diessner", "motip", "hammerite"] },
+      { id: "wood", label: "Protections du bois", cats: ["sikkens", "v33", "basin", "cecil"] }
+    ];
 
     const PRICE_MANIFEST_URL = "prix/manifest.json";
     let PRICE_MAP = Object.create(null);
@@ -487,14 +500,28 @@
     let activeCat = categories[0]?.id || "__none__";
 
     function buildCatButtons() {
-      catButtons.innerHTML = categories.map(c => {
+      const catById = Object.fromEntries(categories.map(c => [c.id, c]));
+      const mkBtn = (c) => {
         const icon = CAT_ICONS[c.id];
         return `
-          <button class="catBtn ${c.id === activeCat ? 'active' : ''}" data-cat="${c.id}" type="button">
-            ${icon ? `<div class="catIcon"><img src="${icon}" alt=""></div>` : ``}
-            <span>${c.label}</span>
-          </button>
-        `;
+      <button class="catBtn ${c.id === activeCat ? 'active' : ''}" data-cat="${c.id}" type="button">
+        ${icon ? `<div class="catIcon"><img src="${icon}" alt=""></div>` : ``}
+        <span>${c.label}</span>
+      </button>
+    `;
+      };
+
+      catButtons.innerHTML = CAT_GROUPS.map(g => {
+        const list = g.cats.map(id => catById[id]).filter(Boolean);
+        if (!list.length) return "";
+        return `
+      <div class="catGroup" data-group="${g.id}">
+        <div class="catGroupTitle">${g.label}</div>
+        <div class="catGroupRow">
+          ${list.map(mkBtn).join("")}
+        </div>
+      </div>
+    `;
       }).join("");
 
       catButtons.querySelectorAll("button[data-cat]").forEach(btn => {
@@ -507,13 +534,25 @@
     }
 
     function buildCatSelect() {
-      catSelect.innerHTML = categories.map(c => `<option value="${c.id}">${c.label}</option>`).join("");
+      const catById = Object.fromEntries(categories.map(c => [c.id, c]));
+
+      catSelect.innerHTML = CAT_GROUPS.map(g => {
+        const list = g.cats.map(id => catById[id]).filter(Boolean);
+        if (!list.length) return "";
+        return `
+      <optgroup label="${g.label}">
+        ${list.map(c => `<option value="${c.id}">${c.label}</option>`).join("")}
+      </optgroup>
+    `;
+      }).join("");
+
       catSelect.addEventListener("change", () => {
         activeCat = catSelect.value;
         syncCategoryUI();
         render();
       });
     }
+
 
     function syncCategoryUI() {
       if (catSelect) catSelect.value = activeCat;
